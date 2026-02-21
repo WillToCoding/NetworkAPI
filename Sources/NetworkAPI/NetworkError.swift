@@ -14,6 +14,7 @@ public enum NetworkError: LocalizedError {
     case dataNotValid
     case nonHTTP
 
+    // Tiene que ser public, porque como forma parte del protocolo LocalizedError, al poner public la enumeración, la obligación del protocolo también tiene que ser public.
     public var errorDescription: String? {
         switch self {
         case .general(let error):

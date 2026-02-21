@@ -5,6 +5,7 @@
 //  Created by Juan Carlos on 20/11/25.
 //
 
+#if os(iOS)
 import SwiftUI
 
 // ACTOR RE-ENTRANCY
@@ -64,8 +65,10 @@ public actor ImageDownloader {
                 cache.removeValue(forKey: url)
         }
     }
-    
+
+    // Lo podemos necesitar para comprobar si el fichero existe.
     nonisolated public func getFileURL(url: URL) -> URL {
         URL.cachesDirectory.appending(path: url.lastPathComponent)
     }
 }
+#endif

@@ -5,6 +5,7 @@
 //  Created by Juan Carlos on 24/11/25.
 //
 
+#if os(iOS)
 import UIKit
 
 extension UIImage {
@@ -14,3 +15,6 @@ extension UIImage {
         return await byPreparingThumbnail(ofSize: size)
     }
 }
+#endif
+
+

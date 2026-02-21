@@ -10,6 +10,7 @@ import Foundation
 public protocol NetworkInteractor {}
 
 extension NetworkInteractor {
+    @available(iOS 17.0, macOS 14.0, *)
     public func getJSON<JSON>(_ request: URLRequest, type: JSON.Type) async throws(NetworkError) -> JSON where JSON: Codable {
         let (data, httpResponse) = try await URLSession.shared.getData(for: request)
         if httpResponse.statusCode == 200 {
@@ -23,6 +24,7 @@ extension NetworkInteractor {
         }
     }
     
+    @available(iOS 17.0, macOS 14.0, *)
     public func postJSON(_ request: URLRequest, status: Int = 200) async throws(NetworkError) {
         let (_, httpResponse) = try await URLSession.shared.getData(for: request)
         if httpResponse.statusCode != status {

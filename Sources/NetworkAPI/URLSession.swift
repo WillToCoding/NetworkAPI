@@ -8,6 +8,7 @@
 import Foundation
 
 extension URLSession {
+    @available(iOS 17.0, macOS 14.0, *)
     public func getData(for request: URLRequest) async throws(NetworkError) -> (data: Data, response: HTTPURLResponse) {
         do {
             let (data, response) = try await URLSession.shared.data(for: request)
