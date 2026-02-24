@@ -5,8 +5,8 @@
 //  Created by Juan Carlos on 20/11/25.
 //
 
-#if os(iOS)
-import SwiftUI
+#if os(iOS) || os(tvOS) || os(watchOS) || os(visionOS)
+import UIKit
 
 // ACTOR RE-ENTRANCY
 public actor ImageDownloader {
