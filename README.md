@@ -48,7 +48,7 @@ Sources/NetworkAPI/
 
 <img src="https://img.shields.io/badge/🔌_NetworkInteractor.swift-3498DB?style=for-the-badge" alt="NetworkInteractor">
 
-**Protocolo base para repositorios de red** — Conforma tu repositorio a este protocolo y obtendrás automáticamente los métodos de red con implementación por defecto.
+**Protocolo con métodos de red** — Cualquier struct o clase que lo adopte obtiene `getJSON` y `postJSON` con implementación por defecto.
 
 ```swift
 struct MangaRepository: NetworkInteractor { }  // ¡Listo para usar!
