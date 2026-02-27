@@ -48,33 +48,49 @@ Sources/NetworkAPI/
 
 <img src="https://img.shields.io/badge/🔌_NetworkInteractor.swift-3498DB?style=for-the-badge" alt="NetworkInteractor">
 
-**Protocolo principal** — Conforma cualquier repositorio a este protocolo para obtener los métodos de red.
+**Protocolo base para repositorios de red** — Conforma tu repositorio a este protocolo y obtendrás automáticamente los métodos de red con implementación por defecto.
 
-| Method | Description |
-|--------|-------------|
-| `getJSON(_:type:)` | GET request → Decodes JSON to `Codable` type |
-| `postJSON(_:status:)` | POST/PUT/DELETE → Validates expected HTTP status |
+```swift
+struct MangaRepository: NetworkInteractor { }  // ¡Listo para usar!
+```
+
+| Método | Qué hace | Cuándo usarlo |
+|--------|----------|---------------|
+| `getJSON(_:type:)` | Ejecuta la petición y decodifica el JSON al tipo que indiques | Para **obtener datos** de una API (GET) |
+| `postJSON(_:status:)` | Ejecuta la petición y valida que el servidor responda con el código esperado | Para **enviar datos** (POST, PUT, DELETE) |
 
 ---
 
 <img src="https://img.shields.io/badge/📤_URLRequest.swift-9B59B6?style=for-the-badge" alt="URLRequest">
 
-**Request builders** — Métodos estáticos para crear peticiones con headers JSON preconfigurados.
+**Constructores de peticiones** — Métodos estáticos que crean `URLRequest` con headers JSON (`Content-Type` y `Accept`) ya configurados.
 
-| Method | Description |
-|--------|-------------|
-| `.get(url:)` | Creates GET request with JSON headers, 60s timeout |
-| `.post(url:body:method:)` | Creates POST/PUT/PATCH/DELETE with Codable body |
+```swift
+let getRequest = URLRequest.get(url: apiURL)
+let postRequest = URLRequest.post(url: apiURL, body: myObject)
+```
+
+| Método | Qué hace | Headers incluidos |
+|--------|----------|-------------------|
+| `.get(url:)` | Crea petición GET con timeout de 60s | `Accept: application/json` |
+| `.post(url:body:method:)` | Crea petición con body codificado a JSON | `Content-Type` + `Accept` |
+
+> 💡 El parámetro `method` permite usar `.put`, `.patch` o `.delete` además de `.post`
 
 ---
 
 <img src="https://img.shields.io/badge/🌐_URLSession.swift-E67E22?style=for-the-badge" alt="URLSession">
 
-**Extension de URLSession** — Wrapper tipado que devuelve `(Data, HTTPURLResponse)` o lanza `NetworkError`.
+**Extension de URLSession** — Reemplaza `data(for:)` con una versión tipada que garantiza `HTTPURLResponse` y lanza errores específicos.
 
-| Method | Description |
-|--------|-------------|
-| `getData(for:)` | Executes request, validates HTTPURLResponse, throws typed errors |
+```swift
+let (data, response) = try await URLSession.shared.getData(for: request)
+// response ya es HTTPURLResponse, no URLResponse
+```
+
+| Método | Qué hace | Ventaja |
+|--------|----------|---------|
+| `getData(for:)` | Ejecuta la petición y valida la respuesta | Lanza `NetworkError` en vez de errores genéricos |
 
 ---
 
@@ -122,7 +138,7 @@ Sources/NetworkAPI/
 | Platform | Version |
 |:--------:|:-------:|
 | iOS | 26+ |
-| macOS | 15+ |
+| macOS | 26+ |
 | watchOS | 26+ |
 | tvOS | 26+ |
 | visionOS | 26+ |
