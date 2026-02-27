@@ -7,27 +7,28 @@
 
 #if os(iOS) || os(tvOS) || os(watchOS) || os(visionOS)
 import UIKit
+public typealias PlatformImage = UIImage
 
 // ACTOR RE-ENTRANCY
 public actor ImageDownloader {
     public static let shared = ImageDownloader()
 
     private enum ImageStatus {
-        case downloading(task: Task<UIImage, any Error>)
-        case downloaded(image: UIImage)
+        case downloading(task: Task<PlatformImage, any Error>)
+        case downloaded(image: PlatformImage)
     }
     private var cache: [URL: ImageStatus] = [:]
 
-    private func getImage(url: URL) async throws -> UIImage {
+    private func getImage(url: URL) async throws -> PlatformImage {
         let (data, _) = try await URLSession.shared.data(from: url)
-        if let image = UIImage(data: data) {
+        if let image = PlatformImage(data: data) {
             return image
         } else {
             throw URLError(.badServerResponse)
         }
     }
 
-    public func image(for url: URL) async throws -> UIImage {
+    public func image(for url: URL) async throws -> PlatformImage {
         if let status = cache[url] {
             return switch status {
             case .downloading(let task):
